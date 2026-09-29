@@ -1,0 +1,7 @@
+ezdxf==1.4.2
+fonttools==4.60.2
+numpy==2.0.2
+pillow==11.3.0
+pyparsing==3.3.3
+skia-pathops==0.8.0.post2
+typing_extensions==4.16.0
