@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4B1D00010000000000000001 /* AprilTagKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4B1D00010000000000000002 /* AprilTagKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		23CE29D4306BDFB100FA610A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B1D00010000000000000001 /* AprilTagKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = Kingdom;
 			packageProductDependencies = (
+				4B1D00010000000000000002 /* AprilTagKit */,
 			);
 			productName = Kingdom;
 			productReference = 23CE29C6306BDFB000FA610A /* Kingdom.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 23CE29BD306BDFB000FA610A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4B1D00010000000000000003 /* XCLocalSwiftPackageReference "Packages/AprilTagKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 23CE29C7306BDFB000FA610A /* Products */;
 			projectDirPath = "";
@@ -400,9 +409,12 @@
 				DEVELOPMENT_TEAM = WBU4CZ6AZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Kingdom-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Kingdom;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Kingdom uses the camera to find Kingdom tags and show animals at their true size.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -432,9 +444,12 @@
 				DEVELOPMENT_TEAM = WBU4CZ6AZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Kingdom-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Kingdom;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Kingdom uses the camera to find Kingdom tags and show animals at their true size.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -578,6 +593,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		4B1D00010000000000000003 /* XCLocalSwiftPackageReference "Packages/AprilTagKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/AprilTagKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4B1D00010000000000000002 /* AprilTagKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B1D00010000000000000003 /* XCLocalSwiftPackageReference "Packages/AprilTagKit" */;
+			productName = AprilTagKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 23CE29BE306BDFB000FA610A /* Project object */;
 }

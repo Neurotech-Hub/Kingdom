@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "marker": {
+    "family": "tag36h11",
+    "tagSize_m": 0.0208
+  },
+  "animals": [
+    {
+      "id": "c57bl6j",
+      "displayName": "C57BL/6J",
+      "commonName": "Black laboratory mouse",
+      "scientificName": "Mus musculus",
+      "strainOrStock": "C57BL/6J",
+      "taxonGroup": "Rodentia",
+      "sex": "Female",
+      "age": "146 days",
+      "bodyMass_g": 22,
+      "provenance": "Photogrammetry scan (mouse_C57BL6_146_day_22_gram_female.usdz)",
+      "notes": "Adult laboratory mouse, prone posture.",
+      "scale": 2.0,
+      "dimensions": {
+        "headBodyLength_m": 0.085,
+        "tailLength_m": 0.080,
+        "shoulderHeight_m": 0.030
+      },
+      "asset": {
+        "fileName": "c57bl6j_female_146d_22g",
+        "fileExtension": "usdz",
+        "yawOffset_deg": 180,
+        "fit": {
+          "mode": "longestHorizontalExtent",
+          "length_m": 0.103,
+          "reference": "Nose to farthest point of the curled tail, about 1.21x head-body length in the scan."
+        }
+      },
+      "standIn": {
+        "bodyPlan": "murid",
+        "color": "#1E1B19",
+        "accentColor": "#B98480"
+      }
+    },
+    {
+      "id": "generic_rat",
+      "displayName": "Generic rat",
+      "commonName": "Brown rat (generic model)",
+      "scientificName": "Rattus norvegicus",
+      "taxonGroup": "Rodentia",
+      "age": "Adult",
+      "bodyMass_g": 350,
+      "provenance": "Generic marketplace model (rat_generic.usdz, baked idle pose)",
+      "notes": "Development comparison asset. Not strain-specific.",
+      "scale": 2.0,
+      "dimensions": {
+        "headBodyLength_m": 0.220,
+        "tailLength_m": 0.180,
+        "shoulderHeight_m": 0.070
+      },
+      "asset": {
+        "fileName": "generic_rat",
+        "fileExtension": "usdz",
+        "yawOffset_deg": 0,
+        "fit": {
+          "mode": "longestHorizontalExtent",
+          "length_m": 0.365,
+          "reference": "Nose to tail tip in the baked pose, about 1.66x head-body length in the model."
+        }
+      },
+      "standIn": {
+        "bodyPlan": "murid",
+        "color": "#6E6259",
+        "accentColor": "#D9A3A0"
+      }
+    },
+    {
+      "id": "red_squirrel",
+      "displayName": "American red squirrel",
+      "commonName": "American red squirrel",
+      "scientificName": "Tamiasciurus hudsonicus",
+      "taxonGroup": "Rodentia",
+      "age": "Adult",
+      "bodyMass_g": 200,
+      "provenance": "Generic marketplace model (squirrel_red_generic.usdz)",
+      "notes": "Crouched pose, head raised.",
+      "scale": 2.0,
+      "dimensions": {
+        "headBodyLength_m": 0.180,
+        "tailLength_m": 0.130,
+        "shoulderHeight_m": 0.080
+      },
+      "asset": {
+        "fileName": "red_squirrel",
+        "fileExtension": "usdz",
+        "yawOffset_deg": 0,
+        "fit": {
+          "mode": "longestHorizontalExtent",
+          "length_m": 0.27,
+          "reference": "Estimated: nose to rear of the raised tail, 1.6x the model's nose-to-rump span, taken as ~0.95x head-body length (crouched)."
+        }
+      },
+      "standIn": {
+        "bodyPlan": "sciurid",
+        "color": "#9A4B25",
+        "accentColor": "#EDE2CF"
+      }
+    },
+    {
+      "id": "gray_squirrel_skull",
+      "displayName": "Gray squirrel skull",
+      "commonName": "Eastern gray squirrel",
+      "scientificName": "Sciurus carolinensis",
+      "taxonGroup": "Rodentia",
+      "age": "Adult",
+      "bodyMass_g": 520,
+      "provenance": "Skull scan (squirrel_grey_skull_sciurus_carolinensis.usdz, decimated to ~208k vertices)",
+      "notes": "Skull with mandible shown at life size. Body mass and lengths describe the whole animal.",
+      "scale": 2.0,
+      "dimensions": {
+        "headBodyLength_m": 0.250,
+        "tailLength_m": 0.210,
+        "shoulderHeight_m": 0.100
+      },
+      "asset": {
+        "fileName": "gray_squirrel_skull",
+        "fileExtension": "usdz",
+        "yawOffset_deg": -90,
+        "fit": {
+          "mode": "longestHorizontalExtent",
+          "length_m": 0.061,
+          "reference": "Greatest skull length, incisors to occipital (typical adult ~60 mm)."
+        }
+      },
+      "standIn": {
+        "bodyPlan": "sciurid",
+        "color": "#7D7B78",
+        "accentColor": "#EFECE6"
+      }
+    },
+    {
+      "id": "fox_squirrel",
+      "displayName": "Eastern fox squirrel",
+      "commonName": "Eastern fox squirrel",
+      "scientificName": "Sciurus niger",
+      "taxonGroup": "Rodentia",
+      "age": "Adult",
+      "bodyMass_g": 800,
+      "provenance": "Generic marketplace model (squirrel_fox_generic.usdz)",
+      "notes": "Seated pose holding a nut, tail curled over the back.",
+      "scale": 2.0,
+      "dimensions": {
+        "headBodyLength_m": 0.270,
+        "tailLength_m": 0.230,
+        "shoulderHeight_m": 0.110
+      },
+      "asset": {
+        "fileName": "fox_squirrel",
+        "fileExtension": "usdz",
+        "yawOffset_deg": 0,
+        "fit": {
+          "mode": "longestHorizontalExtent",
+          "length_m": 0.30,
+          "reference": "Estimated: nut to rear of the curled tail; seated nose-to-rump span taken as ~0.7x head-body length."
+        }
+      },
+      "standIn": {
+        "bodyPlan": "sciurid",
+        "color": "#A0642F",
+        "accentColor": "#D9A56B"
+      }
+    },
+    {
+      "id": "generic_mouse",
+      "displayName": "Generic mouse",
+      "commonName": "House mouse (generic model)",
+      "scientificName": "Mus musculus",
+      "taxonGroup": "Rodentia",
+      "age": "Adult",
+      "provenance": "Generic marketplace model (mouse_generic.usdz)",
+      "notes": "Development comparison asset. Not strain-specific.",
+      "scale": 2.0,
+      "dimensions": {
+        "headBodyLength_m": 0.085,
+        "tailLength_m": 0.085,
+        "shoulderHeight_m": 0.035
+      },
+      "asset": {
+        "fileName": "generic_mouse",
+        "fileExtension": "usdz",
+        "yawOffset_deg": 0,
+        "fit": {
+          "mode": "longestHorizontalExtent",
+          "length_m": 0.170,
+          "reference": "Nose to straight tail tip."
+        }
+      },
+      "standIn": {
+        "bodyPlan": "murid",
+        "color": "#9C9A98",
+        "accentColor": "#D9A3A0"
+      }
+    }
+  ],
+  "cards": [
+    { "id": "card_c57bl6j", "markerID": 0, "animalID": "c57bl6j" },
+    { "id": "card_generic_rat", "markerID": 1, "animalID": "generic_rat" },
+    { "id": "card_red_squirrel", "markerID": 2, "animalID": "red_squirrel" },
+    { "id": "card_gray_squirrel_skull", "markerID": 3, "animalID": "gray_squirrel_skull" },
+    { "id": "card_fox_squirrel", "markerID": 4, "animalID": "fox_squirrel" },
+    { "id": "card_generic_mouse", "markerID": 5, "animalID": "generic_mouse" }
+  ]
+}

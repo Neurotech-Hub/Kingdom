@@ -1,0 +1,10 @@
+module CAprilTag {
+    header "apriltag.h"
+    header "apriltag_pose.h"
+    header "tag36h11.h"
+    header "common/image_u8.h"
+    header "common/zarray.h"
+    header "common/matd.h"
+    link "pthread"
+    export *
+}
