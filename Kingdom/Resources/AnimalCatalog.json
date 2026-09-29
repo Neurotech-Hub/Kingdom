@@ -17,7 +17,7 @@
       "bodyMass_g": 22,
       "provenance": "Photogrammetry scan (mouse_C57BL6_146_day_22_gram_female.usdz)",
       "notes": "Adult laboratory mouse, prone posture.",
-      "scale": 2.0,
+      "scale": 1.5,
       "dimensions": {
         "headBodyLength_m": 0.085,
         "tailLength_m": 0.080,
@@ -49,7 +49,7 @@
       "bodyMass_g": 350,
       "provenance": "Generic marketplace model (rat_generic.usdz, baked idle pose)",
       "notes": "Development comparison asset. Not strain-specific.",
-      "scale": 2.0,
+      "scale": 1.5,
       "dimensions": {
         "headBodyLength_m": 0.220,
         "tailLength_m": 0.180,
@@ -81,7 +81,7 @@
       "bodyMass_g": 200,
       "provenance": "Generic marketplace model (squirrel_red_generic.usdz)",
       "notes": "Crouched pose, head raised.",
-      "scale": 2.0,
+      "scale": 1.5,
       "dimensions": {
         "headBodyLength_m": 0.180,
         "tailLength_m": 0.130,
@@ -113,7 +113,7 @@
       "bodyMass_g": 520,
       "provenance": "Skull scan (squirrel_grey_skull_sciurus_carolinensis.usdz, decimated to ~208k vertices)",
       "notes": "Skull with mandible shown at life size. Body mass and lengths describe the whole animal.",
-      "scale": 2.0,
+      "scale": 1.5,
       "dimensions": {
         "headBodyLength_m": 0.250,
         "tailLength_m": 0.210,
@@ -145,7 +145,7 @@
       "bodyMass_g": 800,
       "provenance": "Generic marketplace model (squirrel_fox_generic.usdz)",
       "notes": "Seated pose holding a nut, tail curled over the back.",
-      "scale": 2.0,
+      "scale": 1.5,
       "dimensions": {
         "headBodyLength_m": 0.270,
         "tailLength_m": 0.230,
@@ -176,7 +176,7 @@
       "age": "Adult",
       "provenance": "Generic marketplace model (mouse_generic.usdz)",
       "notes": "Development comparison asset. Not strain-specific.",
-      "scale": 2.0,
+      "scale": 1.5,
       "dimensions": {
         "headBodyLength_m": 0.085,
         "tailLength_m": 0.085,
