@@ -13,6 +13,10 @@ final class AnimalAnchorManager {
     var snapDistance: Float = 0.04
     /// Orientation change (radians) that is treated as a moved card.
     var snapAngle: Float = .pi / 6
+    /// Camera-to-tag distances (meters) accepted as real detections; anything else is a bad pose.
+    var plausibleDistance: ClosedRange<Float> = 0.03...5
+    /// Seconds before a model that failed to load or went missing is loaded again.
+    var modelRetryInterval: TimeInterval = 2
 
     var labelsVisible = true {
         didSet {
@@ -49,9 +53,16 @@ final class AnimalAnchorManager {
         for observation in observations {
             guard let card = catalog.card(markerID: observation.markerID),
                   let animal = catalog.animal(id: card.animalID) else { continue }
+            guard isPlausible(observation) else {
+                #if DEBUG
+                print("[anchor] rejected tag \(observation.markerID): distance \(observation.distanceMeters) m, finite \(Self.isFinite(observation.worldTransform))")
+                #endif
+                continue
+            }
 
             if let instance = instances[observation.markerID] {
                 refine(instance, with: observation)
+                repairIfNeeded(instance, animal: animal, now: observation.timestamp)
                 if instance.trackingState != .tracking, instance.observationCount >= 3 {
                     instance.trackingState = .tracking
                     changed = true
@@ -128,23 +139,65 @@ final class AnimalAnchorManager {
         )
         instance.observationCount = 1
         instances[card.markerID] = instance
+        loadModel(for: instance, animal: animal, now: observation.timestamp)
+    }
 
+    private func loadModel(for instance: AnimalInstance, animal: AnimalDefinition, now: TimeInterval) {
+        instance.isLoadingModel = true
+        instance.lastModelLoadAttempt = now
         Task { [weak self] in
-            guard let self, let entity = await self.assetManager.makeEntity(for: animal.id) else { return }
-            guard self.instances[card.markerID] === instance else { return }
+            let entity = await self?.assetManager.makeEntity(for: animal.id)
+            guard let self, self.instances[instance.markerID] === instance else { return }
+            instance.isLoadingModel = false
+            guard let entity else { return }
+            instance.entity?.removeFromParent()
+            instance.anchor.findEntity(named: Self.labelName)?.removeFromParent()
             instance.entity = entity
             entity.orientation = Self.presentationYaw
             entity.position = Self.presentationYaw.act(-Self.bodyCenter(of: entity, headBodyLength: Float(animal.dimensions.headBodyLengthMeters * animal.scale)))
-            anchor.addChild(entity)
+            instance.anchor.addChild(entity)
             let label = self.makeLabel(for: animal, above: entity)
             label.isEnabled = self.labelsVisible
-            anchor.addChild(label)
+            instance.anchor.addChild(label)
         }
     }
 
+    /// Restores an instance that is still being detected but whose anchor or model is no longer in the scene.
+    private func repairIfNeeded(_ instance: AnimalInstance, animal: AnimalDefinition, now: TimeInterval) {
+        if instance.anchor.scene == nil, let scene {
+            #if DEBUG
+            print("[anchor] re-adding detached anchor for tag \(instance.markerID)")
+            #endif
+            scene.addAnchor(instance.anchor)
+        }
+        let modelMissing = instance.entity == nil || instance.entity?.parent !== instance.anchor
+        guard modelMissing, !instance.isLoadingModel, now - instance.lastModelLoadAttempt >= modelRetryInterval else { return }
+        #if DEBUG
+        print("[anchor] reloading missing model for tag \(instance.markerID)")
+        #endif
+        loadModel(for: instance, animal: animal, now: now)
+    }
+
+    private func isPlausible(_ observation: MarkerObservation) -> Bool {
+        Self.isFinite(observation.worldTransform) && plausibleDistance.contains(observation.distanceMeters)
+    }
+
+    private static func isFinite(_ matrix: simd_float4x4) -> Bool {
+        let columns = [matrix.columns.0, matrix.columns.1, matrix.columns.2, matrix.columns.3]
+        return columns.allSatisfy { column in (0..<4).allSatisfy { column[$0].isFinite } }
+    }
+
     private func refine(_ instance: AnimalInstance, with observation: MarkerObservation) {
-        let current = instance.smoothedTransform
         let target = observation.worldTransform
+        // A non-finite pose would never satisfy the snap checks below and would stay invisible forever.
+        if !Self.isFinite(instance.smoothedTransform) {
+            #if DEBUG
+            print("[anchor] recovering non-finite pose for tag \(instance.markerID)")
+            #endif
+            instance.smoothedTransform = target
+            instance.observationCount = 1
+        }
+        let current = instance.smoothedTransform
 
         let currentPosition = SIMD3(current.columns.3.x, current.columns.3.y, current.columns.3.z)
         let targetPosition = SIMD3(target.columns.3.x, target.columns.3.y, target.columns.3.z)
@@ -153,7 +206,7 @@ final class AnimalAnchorManager {
         let angle = abs((targetRotation * currentRotation.inverse).angle)
         let wrappedAngle = min(angle, 2 * .pi - angle)
 
-        let smoothed: simd_float4x4
+        var smoothed: simd_float4x4
         if simd_distance(currentPosition, targetPosition) > snapDistance || wrappedAngle > snapAngle {
             smoothed = target
             instance.observationCount = 1
@@ -166,6 +219,10 @@ final class AnimalAnchorManager {
             matrix.columns.3 = SIMD4(position, 1)
             smoothed = matrix
             instance.observationCount += 1
+        }
+        if !Self.isFinite(smoothed) {
+            smoothed = target
+            instance.observationCount = 1
         }
 
         instance.smoothedTransform = smoothed

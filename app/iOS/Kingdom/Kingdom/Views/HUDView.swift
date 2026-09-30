@@ -3,14 +3,29 @@ import SwiftUI
 struct HUDView: View {
     @Bindable var appState: AppState
 
+    @State private var flashOpacity = 0.0
+
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            Spacer()
-            footer
+        ZStack {
+            Color.white
+                .opacity(flashOpacity)
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
+
+            VStack(spacing: 0) {
+                header
+                Spacer()
+                footer
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .onChange(of: appState.photoFlashCount) {
+            flashOpacity = 0.8
+            withAnimation(.easeOut(duration: 0.35)) {
+                flashOpacity = 0
+            }
+        }
     }
 
     private var header: some View {
@@ -58,6 +73,8 @@ struct HUDView: View {
                 }
             }
 
+            shutterButton
+
             HStack(spacing: 12) {
                 Button {
                     appState.showLabels.toggle()
@@ -83,6 +100,27 @@ struct HUDView: View {
             .background(.ultraThinMaterial.opacity(0.9), in: Capsule())
             .environment(\.colorScheme, .dark)
         }
+    }
+
+    private var shutterButton: some View {
+        Button {
+            Task { await appState.capturePhoto() }
+        } label: {
+            ZStack {
+                Circle()
+                    .strokeBorder(Brand.mist, lineWidth: 4)
+                    .frame(width: 68, height: 68)
+                Circle()
+                    .fill(Brand.mist)
+                    .frame(width: 54, height: 54)
+            }
+            .shadow(color: .black.opacity(0.25), radius: 6, y: 2)
+            .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .disabled(appState.isCapturingPhoto)
+        .opacity(appState.isCapturingPhoto ? 0.6 : 1)
+        .accessibilityLabel("Take photo")
     }
 
     private func chip(for summary: AnimalInstanceSummary) -> some View {
@@ -113,6 +151,7 @@ struct HUDView: View {
     }
 
     private var statusText: String {
+        if let message = appState.photoMessage { return message }
         if let message = appState.trackingMessage { return message }
         switch appState.instances.count {
         case 0: return "Point at a Kingdom tag"

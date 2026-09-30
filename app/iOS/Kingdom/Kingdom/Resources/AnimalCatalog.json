@@ -17,7 +17,7 @@
       "bodyMass_g": 22,
       "provenance": "Photogrammetry scan (mouse_C57BL6_146_day_22_gram_female.usdz)",
       "notes": "Adult laboratory mouse, prone posture.",
-      "scale": 1.5,
+      "scale": 2.0,
       "dimensions": {
         "headBodyLength_m": 0.085,
         "tailLength_m": 0.080,
@@ -176,7 +176,7 @@
       "age": "Adult",
       "provenance": "Generic marketplace model (mouse_generic.usdz)",
       "notes": "Development comparison asset. Not strain-specific.",
-      "scale": 1.5,
+      "scale": 2.0,
       "dimensions": {
         "headBodyLength_m": 0.085,
         "tailLength_m": 0.085,

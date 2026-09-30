@@ -412,6 +412,7 @@
 				INFOPLIST_FILE = "Kingdom-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Kingdom;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Kingdom uses the camera to find Kingdom tags and show animals at their true size.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Kingdom saves photos you take in the AR viewer to your library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
@@ -447,6 +448,7 @@
 				INFOPLIST_FILE = "Kingdom-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Kingdom;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Kingdom uses the camera to find Kingdom tags and show animals at their true size.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Kingdom saves photos you take in the AR viewer to your library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = NO;

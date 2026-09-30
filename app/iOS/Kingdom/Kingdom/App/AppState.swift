@@ -1,6 +1,8 @@
 import AVFoundation
 import Foundation
 import Observation
+import Photos
+import UIKit
 
 @MainActor
 @Observable
@@ -84,5 +86,48 @@ final class AppState {
     func reset() {
         selectedInstanceID = nil
         sessionManager?.reset()
+    }
+
+    // MARK: Photo capture
+
+    private(set) var isCapturingPhoto = false
+    /// Incremented on each successful capture to drive the shutter flash.
+    private(set) var photoFlashCount = 0
+    /// Short result shown in the HUD after a capture.
+    private(set) var photoMessage: String?
+
+    func capturePhoto() async {
+        guard !isCapturingPhoto, let sessionManager else { return }
+        isCapturingPhoto = true
+        defer { isCapturingPhoto = false }
+
+        guard let image = await sessionManager.captureSnapshot() else {
+            showPhotoMessage("Couldn't capture photo")
+            return
+        }
+        photoFlashCount += 1
+
+        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        guard status == .authorized || status == .limited else {
+            showPhotoMessage("Allow Photos access in Settings")
+            return
+        }
+        do {
+            try await PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            }
+            showPhotoMessage("Saved to Photos")
+        } catch {
+            showPhotoMessage("Couldn't save photo")
+        }
+    }
+
+    private func showPhotoMessage(_ message: String) {
+        photoMessage = message
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(2))
+            guard let self, photoMessage == message else { return }
+            photoMessage = nil
+        }
     }
 }

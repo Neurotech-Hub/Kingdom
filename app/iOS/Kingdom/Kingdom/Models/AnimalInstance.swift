@@ -23,6 +23,8 @@ final class AnimalInstance: Identifiable {
     var lastSeen: TimeInterval
     var observationCount = 0
     var smoothedTransform: simd_float4x4
+    var isLoadingModel = false
+    var lastModelLoadAttempt: TimeInterval = 0
 
     init(speciesID: String, cardID: String, markerID: Int, anchor: AnchorEntity, initialTransform: simd_float4x4, timestamp: TimeInterval) {
         self.speciesID = speciesID

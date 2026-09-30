@@ -119,6 +119,16 @@ final class ARSessionManager: NSObject {
         arView?.session.pause()
     }
 
+    /// The camera image with rendered animals and labels, without the SwiftUI overlays.
+    func captureSnapshot() async -> UIImage? {
+        guard let arView else { return nil }
+        return await withCheckedContinuation { continuation in
+            arView.snapshot(saveToHDR: false) { image in
+                continuation.resume(returning: image)
+            }
+        }
+    }
+
     /// Pauses tracking and removes every placed animal, e.g. when leaving the AR viewer.
     func stop() {
         anchorManager.reset()

@@ -31,7 +31,7 @@ Each tag is a 2" circle with a tag36h11 AprilTag whose black square is 20.8 mm a
 | 4 | Eastern fox squirrel | `fox_squirrel.usdz` |
 | 5 | Generic mouse | `generic_mouse.usdz` |
 
-The catalog lives in `app/iOS/Kingdom/Kingdom/Resources/AnimalCatalog.json`. For each animal it holds the tag number, the display and scientific names, and the dimensions. It also sets how the model is sized: the fit length, the yaw offset (which way the nose points), and a `scale` correction factor, currently 1.5 while on-device scale is still being calibrated.
+The catalog lives in `app/iOS/Kingdom/Kingdom/Resources/AnimalCatalog.json`. For each animal it holds the tag number, the display and scientific names, and the dimensions. It also sets how the model is sized: the fit length, the yaw offset (which way the nose points), and a `scale` correction factor, currently 2.0 for the mice and 1.5 for the others while on-device scale is still being calibrated.
 
 ## Building the app
 
