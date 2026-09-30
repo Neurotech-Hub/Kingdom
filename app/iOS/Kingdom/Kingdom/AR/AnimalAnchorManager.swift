@@ -13,6 +13,9 @@ final class AnimalAnchorManager {
     var snapDistance: Float = 0.04
     /// Orientation change (radians) that is treated as a moved card.
     var snapAngle: Float = .pi / 6
+    /// Far-off detections needed in a row, agreeing with each other, before the card is treated as moved.
+    /// A single outlier (common at oblique angles) is ignored instead of snapping the animal off the tag.
+    var snapConfirmations = 3
     /// Camera-to-tag distances (meters) accepted as real detections; anything else is a bad pose.
     var plausibleDistance: ClosedRange<Float> = 0.03...5
     /// Seconds before a model that failed to load or went missing is loaded again.
@@ -178,6 +181,17 @@ final class AnimalAnchorManager {
         loadModel(for: instance, animal: animal, now: now)
     }
 
+    /// 1 for a card seen from directly above, falling to 0.15 at grazing angles.
+    private static func viewWeight(for observation: MarkerObservation) -> Float {
+        let transform = observation.worldTransform
+        let tag = SIMD3(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+        let up = simd_normalize(SIMD3(transform.columns.1.x, transform.columns.1.y, transform.columns.1.z))
+        let toCamera = observation.cameraPosition - tag
+        guard simd_length(toCamera) > 1e-4 else { return 1 }
+        let facing = simd_dot(up, simd_normalize(toCamera))
+        return simd_clamp((facing - 0.3) / 0.6, 0.15, 1)
+    }
+
     private func isPlausible(_ observation: MarkerObservation) -> Bool {
         Self.isFinite(observation.worldTransform) && plausibleDistance.contains(observation.distanceMeters)
     }
@@ -207,12 +221,30 @@ final class AnimalAnchorManager {
         let wrappedAngle = min(angle, 2 * .pi - angle)
 
         var smoothed: simd_float4x4
-        if simd_distance(currentPosition, targetPosition) > snapDistance || wrappedAngle > snapAngle {
+        let isFarOff = simd_distance(currentPosition, targetPosition) > snapDistance || wrappedAngle > snapAngle
+        if isFarOff, instance.observationCount < 3 {
+            // Still converging on a new card: follow the latest detection.
             smoothed = target
             instance.observationCount = 1
+            instance.pendingSnap = nil
+        } else if isFarOff {
+            if let pending = instance.pendingSnap, simd_distance(pending, targetPosition) <= snapDistance {
+                instance.pendingSnapCount += 1
+            } else {
+                instance.pendingSnap = targetPosition
+                instance.pendingSnapCount = 1
+            }
+            instance.lastSeen = observation.timestamp
+            guard instance.pendingSnapCount >= snapConfirmations else { return }
+            smoothed = target
+            instance.observationCount = 3
+            instance.pendingSnap = nil
         } else {
-            // Converge quickly on first sightings, then favor stability.
-            let alpha: Float = instance.observationCount < 8 ? 0.6 : 0.3
+            instance.pendingSnap = nil
+            // Converge quickly on first sightings, then favor stability. Oblique views give noisier
+            // poses, so they move the animal less than views from above.
+            let baseAlpha: Float = instance.observationCount < 8 ? 0.6 : 0.3
+            let alpha = baseAlpha * Self.viewWeight(for: observation)
             let position = simd_mix(currentPosition, targetPosition, SIMD3(repeating: alpha))
             let rotation = simd_slerp(currentRotation, targetRotation, alpha)
             var matrix = simd_float4x4(rotation)

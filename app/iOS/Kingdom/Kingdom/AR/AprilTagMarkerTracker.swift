@@ -95,6 +95,7 @@ final class AprilTagMarkerTracker: MarkerTracker {
             return MarkerObservation(
                 markerID: detection.id,
                 worldTransform: MarkerPose.leveled(world),
+                cameraPosition: SIMD3(input.cameraTransform.columns.3.x, input.cameraTransform.columns.3.y, input.cameraTransform.columns.3.z),
                 timestamp: input.timestamp,
                 quality: detection.decisionMargin,
                 distanceMeters: Float(simd_length(translation))

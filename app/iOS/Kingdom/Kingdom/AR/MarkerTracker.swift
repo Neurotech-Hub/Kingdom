@@ -7,7 +7,9 @@ import simd
 /// +X toward the card's right edge and +Z toward its bottom edge (as the artwork reads upright).
 nonisolated struct MarkerObservation: Sendable {
     let markerID: Int
-    let worldTransform: simd_float4x4
+    var worldTransform: simd_float4x4
+    /// Camera position in world space for the frame the tag was detected in.
+    let cameraPosition: SIMD3<Float>
     let timestamp: TimeInterval
     /// Detector confidence; higher is better.
     let quality: Float

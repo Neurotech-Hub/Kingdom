@@ -26,11 +26,44 @@ final class ARSessionManager: NSObject {
         markerTracker = AprilTagMarkerTracker(tagSizeMeters: catalog.marker.tagSizeMeters)
         super.init()
         markerTracker.onObservations = { [weak self] observations in
-            self?.anchorManager.handle(observations)
+            guard let self else { return }
+            anchorManager.handle(observations.map(placedOnPlane))
             #if DEBUG
-            self?.logDepthCheck(observations)
+            logDepthCheck(observations)
             #endif
         }
+    }
+
+    /// Accepted ratio of ARKit plane distance to AprilTag distance along the same ray. Outside it the
+    /// plane hit is likely a different surface (floor, a wall behind the table) and the tag pose is kept.
+    private static let planeDistanceRatio: ClosedRange<Float> = 0.75...1.35
+    /// Minimum `up.y` of a leveled card: only cards lying flat are moved onto a horizontal plane.
+    private static let flatCardMinimumUp: Float = cos(.pi / 7)
+
+    /// Moves a flat card onto ARKit's horizontal plane along the camera-to-tag ray.
+    ///
+    /// A 2" tag gives a poor depth estimate, especially at oblique angles, while ARKit's plane is
+    /// metric. The ray through the tag keeps the card on the tag in the image; the plane fixes how far
+    /// along that ray it sits. Heading still comes from the tag.
+    private func placedOnPlane(_ observation: MarkerObservation) -> MarkerObservation {
+        guard let session = arView?.session,
+              observation.worldTransform.columns.1.y >= Self.flatCardMinimumUp else { return observation }
+        let origin = observation.cameraPosition
+        let tag = SIMD3(observation.worldTransform.columns.3.x, observation.worldTransform.columns.3.y, observation.worldTransform.columns.3.z)
+        let tagDistance = simd_distance(origin, tag)
+        guard tagDistance > 0 else { return observation }
+        let direction = (tag - origin) / tagDistance
+
+        for target in [ARRaycastQuery.Target.existingPlaneGeometry, .estimatedPlane] {
+            let query = ARRaycastQuery(origin: origin, direction: direction, allowing: target, alignment: .horizontal)
+            guard let hit = session.raycast(query).first else { continue }
+            let position = SIMD3(hit.worldTransform.columns.3.x, hit.worldTransform.columns.3.y, hit.worldTransform.columns.3.z)
+            guard Self.planeDistanceRatio.contains(simd_distance(origin, position) / tagDistance) else { continue }
+            var placed = observation
+            placed.worldTransform.columns.3 = SIMD4(position, 1)
+            return placed
+        }
+        return observation
     }
 
     #if DEBUG

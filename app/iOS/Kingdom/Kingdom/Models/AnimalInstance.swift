@@ -25,6 +25,9 @@ final class AnimalInstance: Identifiable {
     var smoothedTransform: simd_float4x4
     var isLoadingModel = false
     var lastModelLoadAttempt: TimeInterval = 0
+    /// Position of far-off detections awaiting confirmation before the card is treated as moved.
+    var pendingSnap: SIMD3<Float>?
+    var pendingSnapCount = 0
 
     init(speciesID: String, cardID: String, markerID: Int, anchor: AnchorEntity, initialTransform: simd_float4x4, timestamp: TimeInterval) {
         self.speciesID = speciesID
